@@ -14,8 +14,8 @@ class Prompt:
         self.msg_list.append(f"AI:{LANGUAGE_TABLE[chat_language]}")
     
     def add_msg(self, new_msg):
-        if len(self.msg_list) >= MSG_LIST_LIMIT:
-            self.remove_msg()
+        # if len(self.msg_list) >= MSG_LIST_LIMIT:
+        #     self.remove_msg()
         self.msg_list.append(new_msg)
 
     def remove_msg(self):

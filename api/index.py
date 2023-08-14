@@ -191,6 +191,7 @@ def handle_message(event):
         num_results = 3
         query = event_message_text
         google_custom_search_result = google_custom_search(google_custom_search_api_key, google_custom_search_cse_id, num_results, query)
+        print("google_custom_search_result:", google_custom_search_result)
         if len(google_custom_search_result) == 0:
             print("無搜尋結果")
         else:
