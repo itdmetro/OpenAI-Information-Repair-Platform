@@ -7,7 +7,7 @@ from api.chatgpt import ChatGPT
 import speech_recognition as sr
 # from pydub import AudioSegment
 import openai
-# import whisper
+import whisper
 # import tempfile
 # from google.cloud import speech_v1p1beta1 as speech
 import requests
@@ -164,7 +164,16 @@ def handle_message(event):
         #     audio_stream = r.open(audio_data=source.get_wav_data(), sample_rate=16000, format="wav") # 將音訊文件轉換成可辨識的音訊物件
         #     event_message_text = r.recognize_google(audio_stream, show_all=False, language='zh-Hant')
         #測試2：
-        event_message_text = r.recognize_google(audio_data, language='zh-Hant')
+        # event_message_text = r.recognize_google(audio_data, language='zh-Hant')
+        #測試3：
+        # 建立一個 Whisper 物件
+        whisper_object = whisper.Whisper()
+        # 將聲音物件傳遞給 Whisper 物件
+        whisper_object.input_audio(audio_data)
+        # 等待 Whisper 物件轉換聲音
+        whisper_object.wait()
+        # 獲取轉換的文字
+        event_message_text = whisper_object.output_text()
 
         #使用OpenAI whisper方法：
         # transcript = openai.Audio.transcribe("whisper-1", input_file)
