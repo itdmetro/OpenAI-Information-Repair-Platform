@@ -61,8 +61,10 @@ def google_custom_search(api_key, cse_id, num_results, query):
         for i in range(len(data["items"])):
             title = data["items"][i]["title"]
             link = data["items"][i]["link"]
-            result_list.append(f"標題{i+1}： {title}")
-            result_list.append(f"連結{i+1}： {link}")
+            result_list.append(f"{title}")
+            result_list.append(f"{link}")
+            # result_list.append(f"標題{i+1}： {title}")
+            # result_list.append(f"連結{i+1}： {link}")
             # print(f"標題： {title} \n")
             # print(f"連結： {link}")
             # print("-" * 40)
