@@ -32,8 +32,7 @@ class ChatGPT:
         # return response['choices'][0]['text'].strip()
 
         #chat completion模型：
-        print("self.prompt.generate_prompt():", type(self.prompt.generate_prompt()))
-        print("self.prompt.generate_prompt():", self.prompt.generate_prompt())
+        # print("self.prompt.generate_prompt():", self.prompt.generate_prompt())
         response = openai.ChatCompletion.create(
           model=self.model,
           messages=[

@@ -77,8 +77,8 @@ def handle_message(event):
     global working_status
     working_status = True
     
-    print("event.message:", event.message)
-    print("event.message.type:",event.message.type)
+    # print("event.message:", event.message)
+    # print("event.message.type:",event.message.type)
 
     if event.message.type == "text":
         print("text")
@@ -181,7 +181,7 @@ def handle_message(event):
     if working_status:
         print("working_status")
         print("event_message_text:", event_message_text)
-        chatgpt.add_msg(f"Human:{event_message_text}?\n")
+        # chatgpt.add_msg(f"Human:{event_message_text}?\n")
         # chatgpt.add_msg(f"Human:{event.message.text}?\n")
         reply_msg = chatgpt.get_response().replace("AI:", "", 1)
         # print("reply_msg:", reply_msg)
