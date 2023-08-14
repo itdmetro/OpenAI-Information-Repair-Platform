@@ -22,5 +22,5 @@ class Prompt:
         self.msg_list.pop(0)
 
     def generate_prompt(self):
-        # self.msg_list.append("，請使用繁體中文回答")
+        self.msg_list.append("，請使用繁體中文回答")
         return '\n'.join(self.msg_list)
