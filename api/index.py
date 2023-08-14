@@ -180,6 +180,7 @@ def handle_message(event):
         
     if working_status:
         print("working_status")
+        print("event_message_text:", event_message_text)
         chatgpt.add_msg(f"Human:{event_message_text}?\n")
         # chatgpt.add_msg(f"Human:{event.message.text}?\n")
         reply_msg = chatgpt.get_response().replace("AI:", "", 1)
@@ -188,7 +189,7 @@ def handle_message(event):
 
         google_custom_search_api_key = os.getenv("google_custom_search_api_key")
         google_custom_search_cse_id = os.getenv("google_custom_search_cse_id")
-        num_results = 5
+        num_results = 3
         query = event_message_text
         google_custom_search_result = google_custom_search(google_custom_search_api_key, google_custom_search_cse_id, num_results, query)
         if len(google_custom_search_result) == 0:
