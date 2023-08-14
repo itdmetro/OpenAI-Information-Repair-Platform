@@ -158,11 +158,13 @@ def handle_message(event):
         #     audio = r.record(source)
         # event_message_text = r.recognize_google(audio, language='zh-Hant')#設定要以什麼文字轉換
 
-        #測試：
-        with sr.AudioData(audio_data, sample_rate=16000, sample_width=2) as source:
-        # with sr.AudioFile(sr.AudioData(audio_data, sample_rate=16000, sample_width=2)) as source:
-            audio_stream = r.open(audio_data=source.get_wav_data(), sample_rate=16000, format="wav") # 將音訊文件轉換成可辨識的音訊物件
-            event_message_text = r.recognize_google(audio_stream, show_all=False, language='zh-Hant')
+        #測試1：
+        # with sr.AudioData(audio_data, sample_rate=16000, sample_width=2) as source:
+        # # with sr.AudioFile(sr.AudioData(audio_data, sample_rate=16000, sample_width=2)) as source:
+        #     audio_stream = r.open(audio_data=source.get_wav_data(), sample_rate=16000, format="wav") # 將音訊文件轉換成可辨識的音訊物件
+        #     event_message_text = r.recognize_google(audio_stream, show_all=False, language='zh-Hant')
+        #測試2：
+            event_message_text = r.recognize_google(audio_data, language='zh-Hant')
 
         #使用OpenAI whisper方法：
         # transcript = openai.Audio.transcribe("whisper-1", input_file)
