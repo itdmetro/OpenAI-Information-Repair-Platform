@@ -17,8 +17,8 @@ class ChatGPT:
 
         #chat completion模型：
         self.prompt = Prompt()
-        self.model = os.getenv("OPENAI_MODEL", default = "gpt-4")
-        # self.model = os.getenv("OPENAI_MODEL", default = "gpt-3.5-turbo")
+        # self.model = os.getenv("OPENAI_MODEL", default = "gpt-4")
+        self.model = os.getenv("OPENAI_MODEL", default = "gpt-3.5-turbo")
 
     def get_response(self):
         # response = openai.Completion.create(
