@@ -182,7 +182,7 @@ def handle_message(event):
         print("working_status")
         print("event_message_text:", event_message_text)
         # chatgpt.add_msg(f"Human:{event_message_text}?\n")
-        # chatgpt.add_msg(f"Human:{event.message.text}?\n")
+        chatgpt.add_msg(f"Human:{event_message_text}，請使用繁體中文回答\n")
         reply_msg = chatgpt.get_response().replace("AI:", "", 1)
         # print("reply_msg:", reply_msg)
         # chatgpt.add_msg(f"AI:{reply_msg}\n")
