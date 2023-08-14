@@ -39,6 +39,7 @@ class ChatGPT:
             {"role": "user", "content": self.prompt.generate_prompt()}
           ]
         )
+        print("response")
 
         return response['choices'][0].message['content']
 

@@ -183,8 +183,8 @@ def handle_message(event):
         print("event_message_text:", event_message_text)
         chatgpt.add_msg(f"Human:{event_message_text}?\n")
         reply_msg = chatgpt.get_response().replace("AI:", "", 1)
+        chatgpt.add_msg(f"AI:{reply_msg}\n")
         print("reply_msg:", reply_msg)
-        # chatgpt.add_msg(f"AI:{reply_msg}\n")
 
         google_custom_search_api_key = os.getenv("google_custom_search_api_key")
         google_custom_search_cse_id = os.getenv("google_custom_search_cse_id")
