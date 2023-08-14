@@ -159,7 +159,8 @@ def handle_message(event):
         # event_message_text = r.recognize_google(audio, language='zh-Hant')#設定要以什麼文字轉換
 
         #測試：
-        with sr.AudioFile(sr.AudioData(audio_data, sample_rate=16000, sample_width=2)) as source:
+        with sr.AudioData(audio_data, sample_rate=16000, sample_width=2) as source:
+        # with sr.AudioFile(sr.AudioData(audio_data, sample_rate=16000, sample_width=2)) as source:
             audio_stream = r.open(audio_data=source.get_wav_data(), sample_rate=16000, format="wav") # 將音訊文件轉換成可辨識的音訊物件
             event_message_text = r.recognize_google(audio_stream, show_all=False, language='zh-Hant')
 
