@@ -116,20 +116,21 @@ def handle_message(event):
         # #         fd.write(chunk)
         # #         print("fd.write(chunk)")
 
-        with tempfile.NamedTemporaryFile('wb') as tf:
-        # with tempfile.NamedTemporaryFile(suffix=".m4a") as tf:
+        with tempfile.NamedTemporaryFile('wb') as fp:
+        # with tempfile.NamedTemporaryFile(suffix=".m4a") as fp:
             print("fp.name:", type(fp.name))
             print("fp.name:", fp.name)
             fp_name = fp.name + ".m4a"
             print("fp_name:", fp_name)
-            for chuck in audio_content.iter_content():
-                tf.write(chuck)
+            for chuck in audio_message.iter_content():
+            # for chuck in audio_content.iter_content():
+                fp.write(chuck)
             # model = whisper.load_model("small")
-            # transcript = model.transcribe(tf.name)
-            # transcript = model.transcribe(tf.name, initial_prompt="今天的天氣、空氣都很好，適合出外郊遊。從陽台望出去，翠綠的平原盡收眼底，都市彷彿遠在天邊。什麼時候要出門呢？")
+            # transcript = model.transcribe(fp.name)
+            # transcript = model.transcribe(fp.name, initial_prompt="今天的天氣、空氣都很好，適合出外郊遊。從陽台望出去，翠綠的平原盡收眼底，都市彷彿遠在天邊。什麼時候要出門呢？")
 
         #     #使用OpenAI whisper方法：
-        #     # filename = tf + ".m4a"
+        #     # filename = fp + ".m4a"
         #     transcript = openai.Audio.transcribe("whisper-1", filename)
         #     print("transcript[\"text\"]")
         #     event_message_text = transcript["text"]
