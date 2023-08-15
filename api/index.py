@@ -115,12 +115,18 @@ def handle_message(event):
         # #     for chunk in audio_content.iter_content():
         # #         fd.write(chunk)
         # #         print("fd.write(chunk)")
+
+        with tempfile.NamedTemporaryFile('wb') as tf:
         # with tempfile.NamedTemporaryFile(suffix=".m4a") as tf:
-        #     for chuck in audio_content.iter_content():
-        #         tf.write(chuck)
-        #     # model = whisper.load_model("small")
-        #     # transcript = model.transcribe(tf.name)
-        #     # transcript = model.transcribe(tf.name, initial_prompt="今天的天氣、空氣都很好，適合出外郊遊。從陽台望出去，翠綠的平原盡收眼底，都市彷彿遠在天邊。什麼時候要出門呢？")
+            print("fp.name:", type(fp.name))
+            print("fp.name:", fp.name)
+            fp_name = fp.name + ".m4a"
+            print("fp_name:", fp_name)
+            for chuck in audio_content.iter_content():
+                tf.write(chuck)
+            # model = whisper.load_model("small")
+            # transcript = model.transcribe(tf.name)
+            # transcript = model.transcribe(tf.name, initial_prompt="今天的天氣、空氣都很好，適合出外郊遊。從陽台望出去，翠綠的平原盡收眼底，都市彷彿遠在天邊。什麼時候要出門呢？")
 
         #     #使用OpenAI whisper方法：
         #     # filename = tf + ".m4a"
@@ -146,7 +152,7 @@ def handle_message(event):
     #     os.chmod(input_file, 0o777)
 
         #進行語音轉文字處理
-        r = sr.Recognizer()
+        # r = sr.Recognizer()
 
 
 
@@ -166,20 +172,20 @@ def handle_message(event):
         #測試2：
         # event_message_text = r.recognize_google(audio_data, language='zh-Hant')
         #測試3：
-        # 建立一個 Whisper 物件
-        whisper_object = whisper.Whisper()
-        # 將聲音物件傳遞給 Whisper 物件
-        whisper_object.input_audio(audio_data)
-        # 等待 Whisper 物件轉換聲音
-        whisper_object.wait()
-        # 獲取轉換的文字
-        event_message_text = whisper_object.output_text()
+        # # 建立一個 Whisper 物件
+        # whisper_object = whisper.Whisper()
+        # # 將聲音物件傳遞給 Whisper 物件
+        # whisper_object.input_audio(audio_data)
+        # # 等待 Whisper 物件轉換聲音
+        # whisper_object.wait()
+        # # 獲取轉換的文字
+        # event_message_text = whisper_object.output_text()
 
         #使用OpenAI whisper方法：
-        # transcript = openai.Audio.transcribe("whisper-1", input_file)
-        # print("transcript[\"text\"]")
-        # event_message_text = transcript["text"]
-        # print("event_message_text:", event_message_text)
+            transcript = openai.Audio.transcribe("whisper-1", fp_name)
+            print("transcript[\"text\"]")
+            event_message_text = transcript["text"]
+            print("event_message_text:", event_message_text)
 
 
 
