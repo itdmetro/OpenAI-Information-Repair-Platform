@@ -120,14 +120,13 @@ def handle_message(event):
         # with tempfile.NamedTemporaryFile(suffix=".m4a") as fp:
             print("fp.name:", type(fp.name))
             print("fp.name:", fp.name)
-            # fp_name = fp.name + ".m4a"
+            fp_name = fp.name
             # print("fp_name:", fp_name)
             for chuck in audio_message.iter_content():
             # for chuck in audio_content.iter_content():
                 fp.write(chuck)
             # model = whisper.load_model("small")
             # transcript = model.transcribe(fp.name)
-            # transcript = model.transcribe(fp.name, initial_prompt="今天的天氣、空氣都很好，適合出外郊遊。從陽台望出去，翠綠的平原盡收眼底，都市彷彿遠在天邊。什麼時候要出門呢？")
 
         #     #使用OpenAI whisper方法：
         #     # filename = fp + ".m4a"
@@ -183,7 +182,7 @@ def handle_message(event):
         # event_message_text = whisper_object.output_text()
 
         #使用OpenAI whisper方法：
-            transcript = openai.Audio.transcribe("whisper-1", fp)
+            transcript = openai.Audio.transcribe("whisper-1", fp_name)
             # transcript = openai.Audio.transcribe("whisper-1", fp.name)
             print("transcript[\"text\"]")
             event_message_text = transcript["text"]
