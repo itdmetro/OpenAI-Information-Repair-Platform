@@ -116,12 +116,12 @@ def handle_message(event):
         # #         fd.write(chunk)
         # #         print("fd.write(chunk)")
 
-        with tempfile.NamedTemporaryFile('wb') as fp:
+        with tempfile.NamedTemporaryFile("w+b", suffix=".m4a") as fp:
         # with tempfile.NamedTemporaryFile(suffix=".m4a") as fp:
             print("fp.name:", type(fp.name))
             print("fp.name:", fp.name)
-            fp_name = fp.name + ".m4a"
-            print("fp_name:", fp_name)
+            # fp_name = fp.name + ".m4a"
+            # print("fp_name:", fp_name)
             for chuck in audio_message.iter_content():
             # for chuck in audio_content.iter_content():
                 fp.write(chuck)
@@ -183,7 +183,8 @@ def handle_message(event):
         # event_message_text = whisper_object.output_text()
 
         #使用OpenAI whisper方法：
-            transcript = openai.Audio.transcribe("whisper-1", fp_name)
+            transcript = openai.Audio.transcribe("whisper-1", fp)
+            # transcript = openai.Audio.transcribe("whisper-1", fp.name)
             print("transcript[\"text\"]")
             event_message_text = transcript["text"]
             print("event_message_text:", event_message_text)
