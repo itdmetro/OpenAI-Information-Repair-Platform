@@ -118,10 +118,10 @@ def handle_message(event):
 
         with tempfile.NamedTemporaryFile("w+b", suffix=".m4a") as fp:
         # with tempfile.NamedTemporaryFile(suffix=".m4a") as fp:
-            print("fp:", type(fp))
-            print("fp:", fp)
-            print("fp.name:", type(fp.name))
-            print("fp.name:", fp.name)
+            # print("fp:", type(fp))
+            print("fp:", fp) #<class 'tempfile._TemporaryFileWrapper'>
+            # print("fp.name:", type(fp.name))
+            print("fp.name:", fp.name) #<class 'str'>
             fp_name = fp.name
             # print("fp_name:", fp_name)
             for chuck in audio_message.iter_content():
@@ -189,20 +189,18 @@ def handle_message(event):
                 # transcript = openai.Audio.transcribe("whisper-1", fp.name)
                 print("transcript[\"text\"]")
                 event_message_text = transcript["text"]
-                print("event_message_text:", event_message_text)
-
-
+                print("event_message_text語音轉文字:", event_message_text)
 
         #將轉換的文字回傳給用戶
-        message.append(TextSendMessage(text=event_message_text))
-        line_bot_api.reply_message(event.reply_token, message)
+        # ?.append(TextSendMessage(text=event_message_text))
+        # line_bot_api.reply_message(event.reply_token, ?)
 
     else:
         return
         
     if working_status:
         print("working_status")
-        print("event_message_text:", event_message_text)
+        print("event_message_text收到資訊:", event_message_text)
         # chatgpt.add_msg(f"Human:{event_message_text}?\n")
         chatgpt.add_msg(f"Human:{event_message_text}，請使用繁體中文回答\n")
         reply_msg = chatgpt.get_response().replace("AI:", "", 1)
