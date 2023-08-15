@@ -8,7 +8,7 @@ import speech_recognition as sr
 # from pydub import AudioSegment
 import openai
 import whisper
-# import tempfile
+import tempfile
 # from google.cloud import speech_v1p1beta1 as speech
 import requests
 import os
