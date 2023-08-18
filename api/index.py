@@ -9,7 +9,6 @@ import speech_recognition as sr
 import openai
 import whisper
 import tempfile
-# from google.cloud import speech_v1p1beta1 as speech
 import requests
 import os
 
@@ -76,9 +75,6 @@ def google_custom_search(api_key, cse_id, num_results, query):
 def handle_message(event):
     global working_status
     working_status = True
-    
-    # print("event.message:", event.message)
-    # print("event.message.type:",event.message.type)
 
     if event.message.type == "text":
         print("text")
@@ -89,75 +85,8 @@ def handle_message(event):
         audio_message = line_bot_api.get_message_content(event.message.id)
         audio_data = audio_message.content
 
-        # 語音辨識
-        # client = speech.SpeechClient()
-        # config = {
-        #     "language_code": "en-US",
-        # }
-        # audio = {"content": audio_data}
-        # response = client.recognize(config=config, audio=audio)
-        
-        # recognized_text = ""
-        # for result in response.results:
-        #     recognized_text += result.alternatives[0].transcript
-
-        # message = recognized_text
-
-
-
-    # elif event.message.type == "audio":
-        # print("audio")
-        # # message.append(TextSendMessage(text='聲音訊息'))
-        # audio_content = line_bot_api.get_message_content(event.message.id)
-
-        # # input_file = 'sound.m4a'
-        # # with open(input_file, 'wb') as fd:
-        # #     for chunk in audio_content.iter_content():
-        # #         fd.write(chunk)
-        # #         print("fd.write(chunk)")
-
-        with tempfile.NamedTemporaryFile("w+b", suffix=".m4a") as fp:
-        # with tempfile.NamedTemporaryFile(suffix=".m4a") as fp:
-            # print("fp:", type(fp))
-            print("fp:", fp) #<class 'tempfile._TemporaryFileWrapper'>
-            # print("fp.name:", type(fp.name))
-            print("fp.name:", fp.name) #<class 'str'>
-            fp_name = fp.name
-            # print("fp_name:", fp_name)
-            for chuck in audio_message.iter_content():
-            # for chuck in audio_content.iter_content():
-                fp.write(chuck)
-            # model = whisper.load_model("small")
-            # transcript = model.transcribe(fp.name)
-            with open(fp_name, "rb") as tf:
-
-        #     #使用OpenAI whisper方法：
-        #     # filename = fp + ".m4a"
-        #     transcript = openai.Audio.transcribe("whisper-1", filename)
-        #     print("transcript[\"text\"]")
-        #     event_message_text = transcript["text"]
-        #     print("event_message_text:", event_message_text)
-
-        #     #將轉換的文字回傳給用戶
-        #     message.append(TextSendMessage(text=event_message_text))
-        #     line_bot_api.reply_message(event.reply_token, message)
-
-    # elif event.message.type == "audio":
-    #     print("audio")
-    #     # message.append(TextSendMessage(text='聲音訊息'))
-    #     audio_content = line_bot_api.get_message_content(event.message.id)
-    #     print("audio_content:", audio_content)
-    #     input_file = 'sound.m4a'
-    #     with open(input_file, 'wb') as fd:
-    #         for chunk in audio_content.iter_content():
-    #             fd.write(chunk)
-    #             print("fd.write(chunk)")
-    #     os.chmod(input_file, 0o777)
-
         #進行語音轉文字處理
         # r = sr.Recognizer()
-
-
 
         # AudioSegment.converter = './ffmpeg/bin/ffmpeg.exe'#輸入自己的ffmpeg.exe路徑
         # sound = AudioSegment.from_file_using_temporary_files(path)
@@ -167,40 +96,29 @@ def handle_message(event):
         #     audio = r.record(source)
         # event_message_text = r.recognize_google(audio, language='zh-Hant')#設定要以什麼文字轉換
 
-        #測試1：
-        # with sr.AudioData(audio_data, sample_rate=16000, sample_width=2) as source:
-        # # with sr.AudioFile(sr.AudioData(audio_data, sample_rate=16000, sample_width=2)) as source:
-        #     audio_stream = r.open(audio_data=source.get_wav_data(), sample_rate=16000, format="wav") # 將音訊文件轉換成可辨識的音訊物件
-        #     event_message_text = r.recognize_google(audio_stream, show_all=False, language='zh-Hant')
-        #測試2：
-        # event_message_text = r.recognize_google(audio_data, language='zh-Hant')
-        #測試3：
-        # # 建立一個 Whisper 物件
-        # whisper_object = whisper.Whisper()
-        # # 將聲音物件傳遞給 Whisper 物件
-        # whisper_object.input_audio(audio_data)
-        # # 等待 Whisper 物件轉換聲音
-        # whisper_object.wait()
-        # # 獲取轉換的文字
-        # event_message_text = whisper_object.output_text()
-
-        #使用OpenAI whisper方法：
+        with tempfile.NamedTemporaryFile("w+b", suffix=".m4a") as fp:
+            # print("fp:", type(fp))
+            print("fp:", fp) #<class 'tempfile._TemporaryFileWrapper'>
+            # print("fp.name:", type(fp.name))
+            print("fp.name:", fp.name) #<class 'str'>
+            fp_name = fp.name
+            # print("fp_name:", fp_name)
+            for chuck in audio_message.iter_content():
+                fp.write(chuck)
+            with open(fp_name, "rb") as tf:
+                #使用OpenAI whisper方法：
                 transcript = openai.Audio.transcribe("whisper-1", tf)
                 # transcript = openai.Audio.transcribe("whisper-1", fp.name)
                 print("transcript[\"text\"]")
                 event_message_text = transcript["text"]
                 print("event_message_text語音轉文字:", event_message_text)
 
-        #將轉換的文字回傳給用戶
-        # ?.append(TextSendMessage(text=event_message_text))
-        # line_bot_api.reply_message(event.reply_token, ?)
-
     else:
         return
         
     if working_status:
         print("working_status")
-        print("event_message_text收到資訊:", event_message_text)
+        print("event_message_text收到文字:", event_message_text)
         # chatgpt.add_msg(f"Human:{event_message_text}?\n")
         chatgpt.add_msg(f"Human:{event_message_text}，請使用繁體中文回答\n")
         reply_msg = chatgpt.get_response().replace("AI:", "", 1)
