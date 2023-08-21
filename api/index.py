@@ -144,23 +144,24 @@ def handle_message(event):
         # chatgpt.add_msg(f"Human:{event_message_text}?\n")
         chatgpt.add_msg(f"Human:{event_message_text}，請使用繁體中文回答\n")
         
-        # reply_msg = chatgpt.get_response().replace("AI:", "", 1)
-        reply_msg = ThreadWithReturnValue(target=chatgpt_get_response)
-        reply_msg.start()
-        reply_msg = reply_msg.join()
-
-        # chatgpt.add_msg(f"AI:{reply_msg}\n")
-        print("reply_msg:", reply_msg)
-
         # google_custom_search_api_key = os.getenv("google_custom_search_api_key")
         # google_custom_search_cse_id = os.getenv("google_custom_search_cse_id")
         # num_results = 3
         query = event_message_text
+        
+        # reply_msg = chatgpt.get_response().replace("AI:", "", 1)
+        reply_msg = ThreadWithReturnValue(target=chatgpt_get_response)
 
         # google_custom_search_result = google_custom_search(google_custom_search_api_key, google_custom_search_cse_id, num_results, query)
-        google_custom_search_result = ThreadWithReturnValue(target=google_custom_search, args=(query))
+        google_custom_search_result = ThreadWithReturnValue(target=google_custom_search, args=(query,))
+
+        reply_msg.start()
         google_custom_search_result.start()
+        reply_msg = reply_msg.join()        
         google_custom_search_result = google_custom_search_result.join()
+
+        # chatgpt.add_msg(f"AI:{reply_msg}\n")
+        print("reply_msg:", reply_msg)
 
         print("google_custom_search_result:", google_custom_search_result)
         if len(google_custom_search_result) == 0:
