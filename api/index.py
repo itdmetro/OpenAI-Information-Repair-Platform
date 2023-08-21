@@ -56,12 +56,11 @@ def chatgpt_get_response():
     reply_msg = chatgpt.get_response().replace("AI:", "", 1)
     return reply_msg
 
-def google_custom_search():
+def google_custom_search(query):
 # def google_custom_search(api_key, cse_id, num_results, query):
     google_custom_search_api_key = os.getenv("google_custom_search_api_key")
     google_custom_search_cse_id = os.getenv("google_custom_search_cse_id")
     num_results = 3
-    query = event_message_text
 
     base_url = "https://www.googleapis.com/customsearch/v1"
     params = {
@@ -156,10 +155,10 @@ def handle_message(event):
         # google_custom_search_api_key = os.getenv("google_custom_search_api_key")
         # google_custom_search_cse_id = os.getenv("google_custom_search_cse_id")
         # num_results = 3
-        # query = event_message_text
+        query = event_message_text
 
         # google_custom_search_result = google_custom_search(google_custom_search_api_key, google_custom_search_cse_id, num_results, query)
-        google_custom_search_result = ThreadWithReturnValue(target=google_custom_search)
+        google_custom_search_result = ThreadWithReturnValue(target=google_custom_search, args=(query))
         google_custom_search_result.start()
         google_custom_search_result = google_custom_search_result.join()
 
