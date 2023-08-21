@@ -58,8 +58,10 @@ def chatgpt_get_response():
 
 def google_custom_search(query):
 # def google_custom_search(api_key, cse_id, num_results, query):
-    google_custom_search_api_key = os.getenv("google_custom_search_api_key")
-    google_custom_search_cse_id = os.getenv("google_custom_search_cse_id")
+    api_key = os.getenv("google_custom_search_api_key")
+    # google_custom_search_api_key = os.getenv("google_custom_search_api_key")
+    cse_id = os.getenv("google_custom_search_cse_id")
+    # google_custom_search_cse_id = os.getenv("google_custom_search_cse_id")
     num_results = 3
 
     base_url = "https://www.googleapis.com/customsearch/v1"
