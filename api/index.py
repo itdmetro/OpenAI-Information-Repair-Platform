@@ -6,6 +6,7 @@ from api.chatgpt import ChatGPT
 #import speech_recognition及pydub套件
 import speech_recognition as sr
 # from pydub import AudioSegment
+from threading import Thread
 import openai
 import whisper
 import tempfile
@@ -39,7 +40,29 @@ def callback():
         abort(400)
     return 'OK'
 
-def google_custom_search(api_key, cse_id, num_results, query):
+class ThreadWithReturnValue(Thread):
+    def __init__(self, group=None, target=None, name=None,
+                 args=(), kwargs={}, Verbose=None):
+        Thread.__init__(self, group, target, name, args, kwargs)
+        self._return = None
+    def run(self):
+        if self._target is not None:
+            self._return = self._target(*self._args, **self._kwargs)
+    def join(self, *args):
+        Thread.join(self, *args)
+        return self._return
+
+def chatgpt_get_response():
+    reply_msg = chatgpt.get_response().replace("AI:", "", 1)
+    return reply_msg
+
+def google_custom_search():
+# def google_custom_search(api_key, cse_id, num_results, query):
+    google_custom_search_api_key = os.getenv("google_custom_search_api_key")
+    google_custom_search_cse_id = os.getenv("google_custom_search_cse_id")
+    num_results = 3
+    query = event_message_text
+
     base_url = "https://www.googleapis.com/customsearch/v1"
     params = {
         "key": api_key,
@@ -121,15 +144,25 @@ def handle_message(event):
         print("event_message_text收到文字:", event_message_text)
         # chatgpt.add_msg(f"Human:{event_message_text}?\n")
         chatgpt.add_msg(f"Human:{event_message_text}，請使用繁體中文回答\n")
-        reply_msg = chatgpt.get_response().replace("AI:", "", 1)
+        
+        # reply_msg = chatgpt.get_response().replace("AI:", "", 1)
+        reply_msg = ThreadWithReturnValue(target=chatgpt_get_response)
+        reply_msg.start()
+        reply_msg = reply_msg.join()
+
         # chatgpt.add_msg(f"AI:{reply_msg}\n")
         print("reply_msg:", reply_msg)
 
-        google_custom_search_api_key = os.getenv("google_custom_search_api_key")
-        google_custom_search_cse_id = os.getenv("google_custom_search_cse_id")
-        num_results = 3
-        query = event_message_text
-        google_custom_search_result = google_custom_search(google_custom_search_api_key, google_custom_search_cse_id, num_results, query)
+        # google_custom_search_api_key = os.getenv("google_custom_search_api_key")
+        # google_custom_search_cse_id = os.getenv("google_custom_search_cse_id")
+        # num_results = 3
+        # query = event_message_text
+
+        # google_custom_search_result = google_custom_search(google_custom_search_api_key, google_custom_search_cse_id, num_results, query)
+        google_custom_search_result = ThreadWithReturnValue(target=google_custom_search)
+        google_custom_search_result.start()
+        google_custom_search_result = google_custom_search_result.join()
+
         print("google_custom_search_result:", google_custom_search_result)
         if len(google_custom_search_result) == 0:
             print("無搜尋結果")
